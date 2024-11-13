@@ -20,12 +20,27 @@ namespace WPFDemo_1735
         {
             InitializeComponent();
 
+
             StockService stockService = new StockService();
 
             // 取得資料並綁定到 DataGrid(dgStock)
             // ItemsSource: 用來指定資料集合，dgStock會根據資料集合顯示資料。
             IEnumerable<Stock> stocks = stockService.GetStocks();
             dgStock.ItemsSource = stocks;
+
+            //LoadStocksAsync();
         }
+        #region
+        /// <summary>
+        /// 非同步執行取得股票資料
+        /// </summary>
+        /// <returns></returns>
+        //private async Task LoadStocksAsync()
+        //{
+        //    StockService stockService = new StockService();
+        //    var stocks = await stockService.GetStocks();
+        //    dgStock.ItemsSource = stocks;
+        //}
+        #endregion
     }
 }

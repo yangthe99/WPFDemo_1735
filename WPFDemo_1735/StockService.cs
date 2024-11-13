@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using Dapper;
+using Oracle.ManagedDataAccess.Client;
 
 namespace WPFDemo_1735
 {
@@ -31,14 +32,45 @@ namespace WPFDemo_1735
         public IEnumerable<Stock> GetStocks()
         {
             // 透過Oracle.ManagedDataAccess連線
-            IDbConnection connection = new Oracle.ManagedDataAccess.Client.OracleConnection(_connectionString);
+            IDbConnection connection = new OracleConnection(_connectionString);
             using (connection)
             {
-                connection.Open();
-                string queryString = "select stock_no,stock_name, low_price, high_price, modify_date, modify_user from STOCK t";
-                return connection.Query<Stock>(queryString);
+                try
+                {
+                    connection.Open();
+                    string queryString = "select stock_no,stock_name, low_price, high_price, modify_date, modify_user from STOCK t";
+                    var result = connection.Query<Stock>(queryString);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException("錯誤訊息：" + ex.Message, ex);
+                }
             }
         }
+        //非同步寫法
+        #region
+        //public async Task<IEnumerable<Stock>> GetStocks() 
+        //{
+        //    // 透過 Oracle.ManagedDataAccess.Client 連線
+        //    OracleConnection connection = new OracleConnection(_connectionString);
+        //    await using (connection)
+        //    {
+        //        try
+        //        {
+        //            await connection.OpenAsync();
+        //            string queryString = "select stock_no,stock_name, low_price, high_price, modify_date, modify_user from STOCK t";
+        //            IEnumerable<Stock> result = await connection.QueryAsync<Stock>(queryString);
+
+        //            return result;
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw new ApplicationException("錯誤訊息：" + ex.Message, ex);
+        //        }
+        //    }
+        //}
+        #endregion
     }
 }
 
