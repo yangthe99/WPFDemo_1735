@@ -31,41 +31,17 @@ namespace WPFDemo_1735
         /// <returns></returns>
         //同步寫法
         #region
-        public IEnumerable<Stock> GetStocks()
-        {
-            // 透過Oracle.ManagedDataAccess連線
-            IDbConnection connection = new OracleConnection(_connectionString);
-            using (connection)
-            {
-                try
-                {
-                    connection.Open();
-                    string queryString = "select stock_no,stock_name, low_price, high_price, modify_date, modify_user from STOCK t";
-                    var result = connection.Query<Stock>(queryString);
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    throw new ApplicationException("錯誤訊息：" + ex.Message, ex);
-                }
-            }
-        }
-        #endregion
-
-        //非同步寫法
-        #region
-        //public async Task<IEnumerable<Stock>> GetStocks() 
+        //public IEnumerable<Stock> GetStocks()
         //{
-        //    // 透過 Oracle.ManagedDataAccess.Client 連線
-        //    OracleConnection connection = new OracleConnection(_connectionString);
-        //    await using (connection)
+        //    // 透過Oracle.ManagedDataAccess連線
+        //    IDbConnection connection = new OracleConnection(_connectionString);
+        //    using (connection)
         //    {
         //        try
         //        {
-        //            await connection.OpenAsync();
+        //            connection.Open();
         //            string queryString = "select stock_no,stock_name, low_price, high_price, modify_date, modify_user from STOCK t";
-        //            IEnumerable<Stock> result = await connection.QueryAsync<Stock>(queryString);
-
+        //            var result = connection.Query<Stock>(queryString);
         //            return result;
         //        }
         //        catch (Exception ex)
@@ -74,6 +50,30 @@ namespace WPFDemo_1735
         //        }
         //    }
         //}
+        #endregion
+
+        //非同步寫法
+        #region
+        public async Task<IEnumerable<Stock>> GetStocks()
+        {
+            // 透過 Oracle.ManagedDataAccess.Client 連線
+            OracleConnection connection = new OracleConnection(_connectionString);
+            await using (connection)
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    string queryString = "select stock_no,stock_name, low_price, high_price, modify_date, modify_user from STOCK t";
+                    IEnumerable<Stock> result = await connection.QueryAsync<Stock>(queryString);
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException("錯誤訊息：" + ex.Message, ex);
+                }
+            }
+        }
         #endregion
     }
 }
