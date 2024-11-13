@@ -29,6 +29,8 @@ namespace WPFDemo_1735
         /// 取得股票資料
         /// </summary>
         /// <returns></returns>
+        //同步寫法
+        #region
         public IEnumerable<Stock> GetStocks()
         {
             // 透過Oracle.ManagedDataAccess連線
@@ -48,6 +50,8 @@ namespace WPFDemo_1735
                 }
             }
         }
+        #endregion
+
         //非同步寫法
         #region
         //public async Task<IEnumerable<Stock>> GetStocks() 

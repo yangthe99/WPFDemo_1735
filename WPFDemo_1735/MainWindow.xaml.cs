@@ -28,6 +28,7 @@ namespace WPFDemo_1735
             IEnumerable<Stock> stocks = stockService.GetStocks();
             dgStock.ItemsSource = stocks;
 
+            //非同步寫法:
             //LoadStocksAsync();
         }
         #region
