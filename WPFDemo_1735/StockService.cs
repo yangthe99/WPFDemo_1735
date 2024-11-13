@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dapper;
 
 namespace WPFDemo_1735
@@ -20,22 +15,31 @@ namespace WPFDemo_1735
         private string _connectionString;
 
         /// <summary>
-        /// StockService建構子，連線
+        /// StockService建構子，讀取 Oracle 資料庫連線字串
         /// </summary>
         public StockService()
         {
-            // 從 App.config 中讀取 Oracle 資料庫連線字串
+            // ConfigurationManager: 讀取應用程式的配置檔案(App.config)
+            // ConnectionStrings: 返回資料庫連線字串的集合
+            // .connectionString: 提取與名稱(OracleDbConnection)相關的實際連線字串
             _connectionString = ConfigurationManager.ConnectionStrings["OracleDbConnection"].ConnectionString;
         }
-
+        /// <summary>
+        /// 取得股票資料
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Stock> GetStocks()
         {
-            using (IDbConnection connection = new Oracle.ManagedDataAccess.Client.OracleConnection(_connectionString))
+            // 透過Oracle.ManagedDataAccess連線
+            IDbConnection connection = new Oracle.ManagedDataAccess.Client.OracleConnection(_connectionString);
+            using (connection)
             {
                 connection.Open();
-                string sql = "select stock_no,stock_name, low_price, high_price, modify_date, modify_user from STOCK t";
-                return connection.Query<Stock>(sql);
+                string queryString = "select stock_no,stock_name, low_price, high_price, modify_date, modify_user from STOCK t";
+                return connection.Query<Stock>(queryString);
             }
         }
     }
 }
+
+// IDbConnection 是 .NET 中的資料庫連線介面，處理資料庫連線、命令和查詢的基本組件。

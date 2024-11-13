@@ -16,21 +16,16 @@ namespace WPFDemo_1735
     /// </summary>
     public partial class MainWindow : Window
     {
-        private StockService _repository;
-
         public MainWindow()
         {
             InitializeComponent();
-            _repository = new StockService();
 
-            // 取得資料並綁定到 DataGrid
-            LoadStockData();
-        }
+            StockService stockService = new StockService();
 
-        private void LoadStockData()
-        {
-            IEnumerable<Stock> stocks = _repository.GetStocks();
-            StockDataGrid.ItemsSource = stocks;
+            // 取得資料並綁定到 DataGrid(dgStock)
+            // ItemsSource: 用來指定資料集合，dgStock會根據資料集合顯示資料。
+            IEnumerable<Stock> stocks = stockService.GetStocks();
+            dgStock.ItemsSource = stocks;
         }
     }
 }

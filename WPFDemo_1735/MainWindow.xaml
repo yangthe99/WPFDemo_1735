@@ -3,10 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFDemo_1735"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="StockList" Height="450" Width="800">
     <Grid>
-        <DataGrid Name="StockDataGrid" AutoGenerateColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <DataGrid Name="dgStock" AutoGenerateColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <!--AutoGenerateColumns: 設為 True 時，DataGrid 會自動根據資料來源的屬性來生成欄位。-->
+        <!--HorizontalAlignment : 水平方向對齊方式。-->
+        <!--VerticalAlignment: 垂直方向對齊方式。-->
+        <!--Stretch: 控件將會拉伸填滿父容器空間。-->
     </Grid>
 </Window>
